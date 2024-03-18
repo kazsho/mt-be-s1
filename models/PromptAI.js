@@ -41,8 +41,7 @@ async function callOpenAI(userInput) {
   async function chat() {
     rl.question("You: ", async (userInput) => {
       try {
-        const transcription = await speechToText(userInput); // assuming userInput contains audio data
-        console.log("Transcription:", transcription);
+        const transcription = await speechToText(userInput);
 
         const reply = await callOpenAI(transcription);
         console.log("AI: ", reply);
