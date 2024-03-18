@@ -6,7 +6,11 @@ require("dotenv").config();
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const speechFile = path.resolve("./speech.mp3");
+const speechFolderPath = path.resolve("./speechFile");
+
+if (!fs.existsSync(speechFolderPath)) {
+  fs.mkdirSync(speechFolderPath);
+}
 
 async function textToSpeech(text) {
   try {
@@ -16,8 +20,11 @@ async function textToSpeech(text) {
       input: text,
     });
     const buffer = Buffer.from(await mp3.arrayBuffer());
-    await fs.promises.writeFile(speechFile, buffer);
-    console.log("Speech file saved to:", speechFile);
+
+    const speechFilePath = path.join(speechFolderPath, "speech.mp3");
+
+    await fs.promises.writeFile(speechFilePath, buffer);
+    console.log("Speech file saved to:", speechFilePath);
   } catch (error) {
     console.error("ERROR:", error);
     throw error;

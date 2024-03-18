@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 
 const logRoutes = require("./middleware/logger");
 const bodyParser = require("body-parser");
@@ -21,10 +23,6 @@ app.get("/", (req, res) => {
 
 app.post("/receive", audioController.receive);
 
-app.get("/send", (req, res) => {
-  res.set("Content-Type", "audio/mp3");
-  const audioStream = fs.createReadStream(speechFile);
-  audioStream.pipe(res);
-});
+app.get("/send", audioController.send);
 
 module.exports = app;
