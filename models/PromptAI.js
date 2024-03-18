@@ -55,3 +55,5 @@ async function callOpenAI(userInput) {
 
   chat();
 })();
+
+module.exports = { conversationArray, callOpenAI };

@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const conversationArray = require("./models/PromptAI");
 
 const logRoutes = require("./middleware/logger");
 const bodyParser = require("body-parser");
@@ -22,5 +23,9 @@ app.get("/", (req, res) => {
 app.post("/receive", audioController.receive);
 
 app.get("/send", audioController.send);
+
+app.get("/conversation", async (req, res) => {
+  res.json(conversationArray);
+});
 
 module.exports = app;

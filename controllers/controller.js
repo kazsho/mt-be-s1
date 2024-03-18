@@ -1,4 +1,6 @@
-const speechToText = require("./models/SpeechToText");
+const speechToText = require("../models/SpeechToText");
+const callOpenAI = require("../models/PromptAI");
+const textToSpeech = require("../models/TextToSpeech");
 const fs = require("fs");
 const path = require("path");
 
