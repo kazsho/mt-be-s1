@@ -26,9 +26,11 @@ app.post("/receive", async (req, res) => {
     console.log("Transcription:", transcription);
 
     const reply = await callOpenAI(transcription);
-    console.log("AI: ", reply);
+    console.log("AI reply:", reply);
 
-    res.send("Audio received, transcribed, and processed successfully");
+    await textToSpeech(reply);
+
+    res.send("Audio generated successfully");
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Error processing audio");
@@ -36,9 +38,9 @@ app.post("/receive", async (req, res) => {
 });
 
 app.get("/send", (req, res) => {
-  const audioData = generateAudioData();
   res.set("Content-Type", "audio/mp3");
-  res.send(audioData);
+  const audioStream = fs.createReadStream(speechFile);
+  audioStream.pipe(res);
 });
 
 module.exports = app;
