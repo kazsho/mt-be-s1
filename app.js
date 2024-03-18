@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const speechToText = require("./models/SpeechToText");
 
 const logRoutes = require("./middleware/logger");
 const bodyParser = require("body-parser");
+const audioController = require("./controllers/controller");
 
 const app = express();
 
@@ -19,23 +19,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/receive", async (req, res) => {
-  try {
-    const audioData = req.body.audio;
-    const transcription = await speechToText(audioData);
-    console.log("Transcription:", transcription);
-
-    const reply = await callOpenAI(transcription);
-    console.log("AI reply:", reply);
-
-    await textToSpeech(reply);
-
-    res.send("Audio generated successfully");
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send("Error processing audio");
-  }
-});
+app.post("/receive", audioController.receive);
 
 app.get("/send", (req, res) => {
   res.set("Content-Type", "audio/mp3");
