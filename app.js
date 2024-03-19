@@ -43,10 +43,6 @@ const upload = multer({
   limits: { fileSize: 10000000 }, // Limit file size (optional)
 });
 
-// Middleware
-app.use(express.json());
-app.use(bodyParser.raw({ type: "audio/*", limit: "10mb" }));
-
 // Routes
 app.get("/", (req, res) => {
   res.json({
@@ -55,14 +51,12 @@ app.get("/", (req, res) => {
   });
 });
 
-// Route to receive voice notes
+// Route to receive user's recorded speech audio 
 app.post("/receive", upload.single("audio"), audioController.receive);
-
-// app.post("/speech-to-text", upload.single("audio"), speechToText);
 
 //conversation array from ai
 app.get("/conversation", async (req, res) => {
   res.json(conversationArray);
 });
 
-(module.exports = app), speechFolderPath;
+(module.exports = app), speechFolderPath; 

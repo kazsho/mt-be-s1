@@ -15,57 +15,39 @@ async function receive(req, res) {
     return res.status(400).send("No file uploaded.");
   }
   try {
-    // // Receive audio asynchronously
+    // Receive audio asynchronously
     const audioData = await fs.readFile(
       path.join(__dirname, "..", req.file.path)
     );
 
-    // // Call the speech to text asynchronously
+    // // Call Google Cloud Speech-to-Text APIs
     const gujaratiTranscription = await transcribeGujarati(audioData);
     const englishTranscription = await transcribeEnglish(audioData);
 
     // // Ask for GPT reply asynchronously
-    const textReplyFromGPT = await callOpenAIWithTranscription(
-      gujaratiTranscription,
-      englishTranscription
-    );
+    // const textReplyFromGPT = await callOpenAIWithTranscription(
+    //   gujaratiTranscription,
+    //   englishTranscription
+    // );
 
-    // // Generate speech file asynchronously
+    // Mock GPT reply for debugging
+    const textReplyFromGPT = "This is a mock reply from GPT";
+
+    // Generate text-to-speech audio from the language model
     const speechReplyFromGPT = await textToSpeech(textReplyFromGPT);
+    const base64speechReplyFromGPT = speechReplyFromGPT.toString("base64");
 
     // // Find folder speech file
     // const speechFilePath = path.join(speechFolderPath, "speech.mp3");
     // const audioFile = await fs.readFile(speechFilePath);
 
-    // // Set response to indicate an audio
-    res.set({
-      "Content-Type": "audio/*",
-      "Content-Disposition": "attachment; filename=speech.mp3",
-    });
-
-    // // Send the audio to frontend
-    // res.write(audioFile);
-
-    // // Send the transcription back too
-    // res.write("\nTranscription:\n" + transcription);
-
-    console.log("speechReplyFromGPT", speechReplyFromGPT);
-
-    // Our lovely response object
-    const responseObject = {
-      userAudio: req.file, // The original request audio
-      modelAudio: speechReplyFromGPT,
+    res.status(200).json({
+      // userAudio: req.file, // (The original request audio)
+      modelAudio: base64speechReplyFromGPT,
       userTranscription: englishTranscription,
       modelTranscription: textReplyFromGPT,
-    };
-
-    res.status(200).send(responseObject);
-
-    // End response
-    // Send both in the same request to ensure no further processing
-    // res.end();
+    });
   } catch (error) {
-    // Error handling
     console.error("Error while transcribing:", error);
     res.status(500).json({ error: "server error" });
   }
