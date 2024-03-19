@@ -1,52 +1,46 @@
-const speechToText = require("../models/SpeechToText");
-const callOpenAI = require("../models/PromptAI");
-const textToSpeech = require("../models/TextToSpeech");
+const transcribeGurathie = require("../Services/SpeechToText");
 const fs = require("fs");
 const path = require("path");
+const { callOpenAIWithTranscription } = require("../Services/PromptAI");
+const textToSpeech = require("../Services/TextToSpeech");
+const speechFolderPath = require("../app");
 
 async function receive(req, res) {
+  //handle errors on the data coming in
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
   try {
-    const audioData = req.body.audio;
-    const transcription = await speechToText(audioData);
-    console.log("Transcription:", transcription);
+    //receive audio
+    const audioData = fs.readFileSync(
+      path.join(__dirname, "..", req.file.path)
+    );
 
-    const reply = await callOpenAI(transcription);
-    console.log("AI reply:", reply);
+    //i call the speech to text
+    const transcription = await transcribeGurathie(audioData);
 
+    // ask for GPT reply
+    const reply = await callOpenAIWithTranscription(transcription);
+
+    // Generate speech file
     await textToSpeech(reply);
 
-    res.send("Audio generated successfully");
+    // find folder speech file
+    const speechFilePath = path.join(speechFolderPath, "speech.mp3");
+    const audioFile = fs.readFileSync(speechFilePath);
+
+    // Set response indicate  an audio
+    res.set({
+      "Content-Type": "audio/mpeg",
+      "Content-Disposition": "attachment; filename=speech.mp3",
+    });
+
+    // Send the audio to frontend
+    res.send(audioFile);
   } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send("Error processing audio");
-  }
-}
-
-async function send(req, res) {
-  try {
-    const files = await fs.promises.readdir(speechFolderPath);
-
-    if (!files || files.length === 0) {
-      return res.status(404).send("No audio files found");
-    }
-
-    const filePaths = files.map((file) => path.join(speechFolderPath, file));
-    const fileStatsPromises = filePaths.map((filePath) =>
-      fs.promises.stat(filePath)
-    );
-    const fileStats = await Promise.all(fileStatsPromises);
-
-    const sortedFiles = files
-      .map((file, index) => ({ file, mtime: fileStats[index].mtime.getTime() }))
-      .sort((a, b) => b.mtime - a.mtime);
-
-    const latestAudioFile = sortedFiles[0].file;
-    const audioFilePath = path.join(speechFolderPath, latestAudioFile);
-
-    res.sendFile(audioFilePath);
-  } catch (err) {
-    console.error("Error:", err);
-    res.status(500).send("Internal Server Error");
+    //error handling
+    console.error("Error while transcribing:", error);
+    res.status(500).json({ error: "server error" });
   }
 }
 
