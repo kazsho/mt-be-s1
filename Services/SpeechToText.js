@@ -31,8 +31,8 @@ async function speechToText(audioData, languageCode) {
   }
 }
 
-function transcribeGurathie(audioData) {
+function transcribeGujarati(audioData) {
   return speechToText(audioData, "gu-IN");
 }
 
-module.exports = { transcribeGurathie, speechToText };
+module.exports = { transcribeGujarati, speechToText };

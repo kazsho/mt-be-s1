@@ -1,4 +1,4 @@
-const transcribeGurathie = require("../Services/SpeechToText");
+const transcribeGujarati = require("../Services/SpeechToText");
 const fs = require("fs");
 const path = require("path");
 const { callOpenAIWithTranscription } = require("../Services/PromptAI");
@@ -17,7 +17,7 @@ async function receive(req, res) {
     );
 
     //i call the speech to text
-    const transcription = await transcribeGurathie(audioData);
+    const transcription = await transcribeGujarati(audioData);
 
     // ask for GPT reply
     const reply = await callOpenAIWithTranscription(transcription);
