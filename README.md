@@ -38,6 +38,10 @@ you will need to install the following dependencies to achieve that `npm install
 
 # routes:
 
-there is a receive route that will take in a sound and then will transcript it send it to the ai and then send speech back
+there is a receive route that will take in a sound and then will transcript it send it to the ai and then send speech and transcription back
 <br>
 there is a conversation Array route that will show the open AI array of conversation user input and a ai response
+
+# Database:
+
+there is a database that will be connected the information of the user for the individual accounts as well as it will save the conversation array and audio files that the user have had with the AI
