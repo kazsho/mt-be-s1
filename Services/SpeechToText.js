@@ -4,7 +4,7 @@ const client = new speech.SpeechClient({
   keyFilename: "./key.json",
 });
 
-async function speechToText(audioData) {
+async function speechToText(audioData, languageCode) {
   try {
     const audioBytes = Buffer.from(audioData, "base64");
 
@@ -12,11 +12,11 @@ async function speechToText(audioData) {
       content: audioBytes,
     };
     const config = {
-      encoding: "FLAC",
-      sampleRateHertz: 48000,
-      languageCode: "gu-IN",
-      audioChannelCount: 1,
-      enableSeparateRecognitionPerChannel: false,
+      // encoding: "FLAC",
+      // sampleRateHertz: 48000,
+      languageCode: languageCode,
+      // audioChannelCount: 1,
+      // enableSeparateRecognitionPerChannel: false,
     };
     const request = {
       audio: audio,
@@ -24,15 +24,15 @@ async function speechToText(audioData) {
     };
 
     const [response] = await client.recognize(request);
-    const transcription = response.results
-      .map((result) => result.alternatives[0].transcript)
-      .join("\n");
-
-    return transcription;
+    return response.results;
   } catch (error) {
     console.error("ERROR:", error);
     throw error;
   }
 }
 
-module.exports = { speechToText };
+function transcribeGurathie(audioData) {
+  return speechToText(audioData, "gu-IN");
+}
+
+module.exports = { transcribeGurathie, speechToText };

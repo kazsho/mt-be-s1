@@ -1,17 +1,30 @@
 const express = require("express");
 const cors = require("cors");
-const speechToText = require("./models/SpeechToText");
+const conversationArray = require("./Services/PromptAI");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+const fs = require("fs");
+const path = require("path");
 
 const logRoutes = require("./middleware/logger");
 const bodyParser = require("body-parser");
+const audioController = require("./controllers/controller");
+
+const speechFolderPath = path.resolve("./speechFile");
+
+if (!fs.existsSync(speechFolderPath)) {
+  fs.mkdirSync(speechFolderPath);
+}
 
 const app = express();
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 app.use(logRoutes);
 app.use(bodyParser.raw({ type: "audio/*", limit: "10mb" }));
 
+// Routes
 app.get("/", (req, res) => {
   res.json({
     name: "Language app",
@@ -19,26 +32,12 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/receive", async (req, res) => {
-  try {
-    const audioData = req.body.audio;
-    const transcription = await speechToText(audioData);
-    console.log("Transcription:", transcription);
+//to recieve voice notes
+app.post("/receive", upload.single("audio"), audioController.receive);
 
-    const reply = await callOpenAI(transcription);
-    console.log("AI: ", reply);
-
-    res.send("Audio received, transcribed, and processed successfully");
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send("Error processing audio");
-  }
+//conversation array from ai
+app.get("/conversation", async (req, res) => {
+  res.json(conversationArray);
 });
 
-app.get("/send", (req, res) => {
-  const audioData = generateAudioData();
-  res.set("Content-Type", "audio/mp3");
-  res.send(audioData);
-});
-
-module.exports = app;
+(module.exports = app), speechFolderPath;

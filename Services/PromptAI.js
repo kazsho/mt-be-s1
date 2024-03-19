@@ -1,7 +1,6 @@
 const OpenAI = require("openai");
 require("dotenv").config();
 const readline = require("readline");
-const speechToText = require("./SpeechToText");
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -13,10 +12,10 @@ const conversationArray = [
       "You are a helpful language tutor. Your job is to help the user learn Gujarati...",
   },
 ];
-async function callOpenAI(userInput) {
+async function callOpenAIWithTranscription(userInput) {
   conversationArray.push({
     role: "user",
-    content: userInput,
+    content: transcription,
   });
   const chatCompletion = await openai.chat.completions.create({
     messages: conversationArray,
@@ -29,6 +28,7 @@ async function callOpenAI(userInput) {
     role: "assistant",
     content: reply,
   });
+
   return reply;
 }
 
@@ -56,4 +56,4 @@ async function callOpenAI(userInput) {
   chat();
 })();
 
-module.exports = { callOpenAI }
+module.exports = { conversationArray, callOpenAIWithTranscription };
