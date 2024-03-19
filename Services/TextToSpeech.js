@@ -17,17 +17,25 @@ async function textToSpeech(text) {
     const mp3 = await openai.audio.speech.create({
       model: "tts-1",
       voice: "nova",
-      input: text,
+      input: "Hello this a test",
     });
     const buffer = Buffer.from(await mp3.arrayBuffer());
+    return buffer; // Return the buffer for direct transmission
 
-    const speechFilePath = path.join(speechFolderPath, "speech.mp3");
+    // const mp3 = await openai.audio.speech.create({
+    //   model: "tts-1",
+    //   voice: "nova",
+    //   input: text,
+    // });
+    // const buffer = Buffer.from(await mp3.arrayBuffer());
 
-    await fs.promises.writeFile(speechFilePath, buffer);
-    console.log("Speech file saved to:", speechFilePath);
+    // const speechFilePath = path.join(speechFolderPath, "speech.mp3");
+
+    // await fs.promises.writeFile(speechFilePath, buffer);
+    // console.log("Speech file saved to:", speechFilePath);
   } catch (error) {
     console.error("ERROR:", error);
     throw error;
   }
 }
-module.exports = textToSpeech;
+module.exports = { textToSpeech };

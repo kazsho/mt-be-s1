@@ -58,6 +58,8 @@ app.get("/", (req, res) => {
 // Route to receive voice notes
 app.post("/receive", upload.single("audio"), audioController.receive);
 
+// app.post("/speech-to-text", upload.single("audio"), speechToText);
+
 //conversation array from ai
 app.get("/conversation", async (req, res) => {
   res.json(conversationArray);
