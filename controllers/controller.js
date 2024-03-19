@@ -36,7 +36,14 @@ async function receive(req, res) {
     });
 
     // Send the audio to frontend
-    res.send(audioFile);
+    res.write(audioFile);
+
+    //send the transcription back too
+    res.write("\nTranscription:\n" + transcription);
+
+    //end response
+    //send both in the same request to ensure no further processing
+    res.end();
   } catch (error) {
     //error handling
     console.error("Error while transcribing:", error);

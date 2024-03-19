@@ -16,3 +16,28 @@ The application captures user-recorded audio from the frontend and transmits it 
 # this backend is live on:
 
 https://mt-be-s1.onrender.com/
+
+# project Aim:
+
+have the audio received from the front end sent to an Ai module then the reply gets sent back to the user in a speech formate
+
+# Installs:
+
+you will need to install the following dependencies to achieve that `npm install $$` change the `$$` with one of the following:
+
+    `@google-cloud/speech`
+    `cors`
+    `dotenv`
+    `express`
+    `fs`
+    `multer`
+    `openai`
+    `pg`
+
+    you will need to install a devDependencies`nodemon` to achieve that `npm install -D nodemon`
+
+# routes:
+
+there is a receive route that will take in a sound and then will transcript it send it to the ai and then send speech back
+<br>
+there is a conversation Array route that will show the open AI array of conversation user input and a ai response
