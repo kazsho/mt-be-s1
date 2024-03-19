@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const conversationArray = require("./Services/PromptAI");
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+
 const fs = require("fs");
 const path = require("path");
 
@@ -25,6 +25,29 @@ app.use(logRoutes);
 app.use(bodyParser.raw({ type: "audio/*", limit: "10mb" }));
 
 // Routes
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads/"); // Destination folder for storing uploaded files
+  },
+  filename: function (req, file, cb) {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    ); // File naming convention
+  },
+});
+
+// Initialize multer middleware
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 10000000 }, // Limit file size (optional)
+});
+
+// Middleware
+app.use(express.json());
+app.use(bodyParser.raw({ type: "audio/*", limit: "10mb" }));
+
+// Routes
 app.get("/", (req, res) => {
   res.json({
     name: "Language app",
@@ -32,7 +55,7 @@ app.get("/", (req, res) => {
   });
 });
 
-//to recieve voice notes
+// Route to receive voice notes
 app.post("/receive", upload.single("audio"), audioController.receive);
 
 //conversation array from ai
