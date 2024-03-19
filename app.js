@@ -3,6 +3,8 @@ const cors = require("cors");
 const conversationArray = require("./Services/PromptAI");
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
+const fs = require("fs");
+const path = require("path");
 
 const logRoutes = require("./middleware/logger");
 const bodyParser = require("body-parser");

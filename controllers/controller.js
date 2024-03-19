@@ -44,4 +44,4 @@ async function receive(req, res) {
   }
 }
 
-module.exports = { receive, send };
+module.exports = { receive };
