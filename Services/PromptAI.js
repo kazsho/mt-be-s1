@@ -12,7 +12,7 @@ const conversationArray = [
       "You are a helpful language tutor. Your job is to help the user learn Gujarati...",
   },
 ];
-async function callOpenAIWithTranscription(userInput) {
+async function callOpenAIWithTranscription(transcription) {
   conversationArray.push({
     role: "user",
     content: transcription,
