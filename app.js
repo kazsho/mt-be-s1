@@ -24,24 +24,27 @@ app.use(express.json());
 app.use(logRoutes);
 app.use(bodyParser.raw({ type: "audio/*", limit: "10mb" }));
 
-// Routes
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Destination folder for storing uploaded files
-  },
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    ); // File naming convention
-  },
-});
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-// Initialize multer middleware
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 10000000 }, // Limit file size (optional)
-});
+// // Routes
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/"); // Destination folder for storing uploaded files
+//   },
+//   filename: function (req, file, cb) {
+//     cb(
+//       null,
+//       file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+//     ); // File naming convention
+//   },
+// });
+
+// // Initialize multer middleware
+// const upload = multer({
+//   storage: storage,
+//   limits: { fileSize: 10000000 }, // Limit file size (optional)
+// });
 
 // Routes
 app.get("/", (req, res) => {
