@@ -4,7 +4,9 @@ const fs = require("fs");
 
 const db = require("./connect");
 
-const sql = fs.readFileSync("./Database.sql").toString();
+const sql = fs.readFileSync("./Database/Database.sql").toString();
+
+console.log(sql)
 
 const setupDatabase = async () => {
   try {
@@ -18,3 +20,6 @@ const setupDatabase = async () => {
 };
 
 setupDatabase();
+
+module.exports = setupDatabase;
+

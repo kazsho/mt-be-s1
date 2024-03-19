@@ -35,4 +35,4 @@ async function speechToText(audioData) {
   }
 }
 
-module.exports = speechToText;
+module.exports = { speechToText };

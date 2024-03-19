@@ -1,7 +1,7 @@
 const OpenAI = require("openai");
 require("dotenv").config();
 const readline = require("readline");
-const speechToText = require("./models/SpeechToText");
+const speechToText = require("./SpeechToText");
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -55,3 +55,5 @@ async function callOpenAI(userInput) {
 
   chat();
 })();
+
+module.exports = { callOpenAI }
