@@ -33,6 +33,7 @@ English transcription: ${englishTranscription}`,
   });
 
   console.log(reply);
+  console.log('log' + reply)
 
   return reply.gpt_response;
 }
