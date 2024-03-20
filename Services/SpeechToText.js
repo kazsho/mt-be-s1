@@ -1,7 +1,7 @@
 const speech = require("@google-cloud/speech");
 
 const client = new speech.SpeechClient({
-  keyFilename: "./key.json",
+  keyFilename: "./Database/key.json",
 });
 
 async function speechToText(audioData, languageCode) {
@@ -12,11 +12,11 @@ async function speechToText(audioData, languageCode) {
       content: audioBytes,
     };
     const config = {
-      // encoding: "FLAC",
-      // sampleRateHertz: 48000,
+      encoding: "FLAC",
+      sampleRateHertz: 48000,
       languageCode: languageCode,
-      // audioChannelCount: 1,
-      // enableSeparateRecognitionPerChannel: false,
+      audioChannelCount: 1,
+      enableSeparateRecognitionPerChannel: false,
     };
     const request = {
       audio: audio,
