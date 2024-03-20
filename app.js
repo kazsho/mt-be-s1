@@ -24,28 +24,27 @@ app.use(express.json());
 app.use(logRoutes);
 app.use(bodyParser.raw({ type: "audio/*", limit: "10mb" }));
 
-// Routes
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads/"); // Destination folder for storing uploaded files
-  },
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    ); // File naming convention
-  },
-});
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-// Initialize multer middleware
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 10000000 }, // Limit file size (optional)
-});
+// // Routes
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads/"); // Destination folder for storing uploaded files
+//   },
+//   filename: function (req, file, cb) {
+//     cb(
+//       null,
+//       file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+//     ); // File naming convention
+//   },
+// });
 
-// Middleware
-app.use(express.json());
-app.use(bodyParser.raw({ type: "audio/*", limit: "10mb" }));
+// // Initialize multer middleware
+// const upload = multer({
+//   storage: storage,
+//   limits: { fileSize: 10000000 }, // Limit file size (optional)
+// });
 
 // Routes
 app.get("/", (req, res) => {
@@ -55,14 +54,12 @@ app.get("/", (req, res) => {
   });
 });
 
-// Route to receive voice notes
+// Route to receive user's recorded speech audio 
 app.post("/receive", upload.single("audio"), audioController.receive);
-
-// app.post("/speech-to-text", upload.single("audio"), speechToText);
 
 //conversation array from ai
 app.get("/conversation", async (req, res) => {
   res.json(conversationArray);
 });
 
-(module.exports = app), speechFolderPath;
+(module.exports = app), speechFolderPath; 
