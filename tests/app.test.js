@@ -24,8 +24,8 @@ describe('Express App', () => {
   });
 
   it('should process audio data for POST /receive', async () => {
-    jest.spyOn(require('../models/SpeechToText'), 'speechToText').mockResolvedValue('mock-transcription');
-    jest.spyOn(require('../models/PromptAI'), 'callOpenAI').mockResolvedValue('mock-reply');
+    jest.spyOn(require('../Services/SpeechToText'), 'speechToText').mockResolvedValue('mock-transcription');
+    jest.spyOn(require('../Services/PromptAI'), 'callOpenAIWithTranscription').mockResolvedValue('mock-reply');
 
     const response = await request(app)
       .post('/receive')
@@ -33,8 +33,8 @@ describe('Express App', () => {
 
     expect(response.status).toBe(200); /* Showing 500 status code instead */
     expect(response.text).toBe('Audio received, transcribed, and processed successfully');
-    expect(require('../models/SpeechToText').speechToText).toHaveBeenCalledWith(audioData);
-    expect(require('../models/PromptAI').callOpenAI).toHaveBeenCalledWith('mock-transcription');
+    expect(require('../Services/SpeechToText').speechToText).toHaveBeenCalledWith(audioData);
+    expect(require('../Services/PromptAI').callOpenAI).toHaveBeenCalledWith('mock-transcription');
   });
 
   it('should return audio data for GET /send', async () => {

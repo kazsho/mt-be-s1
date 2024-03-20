@@ -1,12 +1,8 @@
 const fs = require("fs");
+const path = require('path');
 const db = require("../Database/connect");
 const setupDatabase = require("../Database/setup");
-const sqlContents = `CREATE TABLE IF NOT EXISTS users (·
-    id SERIAL PRIMARY KEY,·
-    username VARCHAR(255) NOT NULL,·
-    email VARCHAR(255) NOT NULL·
-);·
-`
+const sqlContents = fs.readFileSync(path.join(__dirname, '../Database/Database.sql'), 'utf8');
 
 describe("Database Setup", () => {
 
@@ -25,7 +21,7 @@ describe("Database Setup", () => {
       "C:\\Users\\rahma\\Coding Practice\\Lap 4\\Project\\mt-be-s1\\node_modules\\jest-mock\\build\\index.js"
     ]).toContainEqual(fs.readFileSync.mock.calls[0][0]);
     expect(fs.readFileSync.mock.calls[0][1]).toEqual('utf8');
-    expect(db.query).toHaveBeenCalledWith(expect.stringMatching(/\s*CREATE TABLE IF NOT EXISTS users \(\s*id SERIAL PRIMARY KEY,\s*username VARCHAR\(255\) NOT NULL,\s*email VARCHAR\(255\) NOT NULL\s*\);/));
+    expect(db.query).toHaveBeenCalledWith(sqlContents);
     expect(console.log).toHaveBeenCalledWith("setup complete");
     expect(db.end).toHaveBeenCalled();
   });

@@ -1,50 +1,45 @@
-const { speechToText } = require('../models/SpeechToText'); // Adjust the import path as needed
-const speech = require('@google-cloud/speech'); // Assuming you have this dependency
+const speech = require('@google-cloud/speech');
 
-// Mock the SpeechClient
+const mockRecognizeResponse = {
+    results: [
+      { alternatives: [{ transcript: 'Hello world' }] }
+    ]
+};
+const mockSpeechClient = {
+recognize: jest.fn().mockResolvedValue([mockRecognizeResponse])
+};
 jest.mock('@google-cloud/speech', () => ({
-  SpeechClient: jest.fn(() => ({
-    recognize: jest.fn().mockResolvedValue({
-      results: [{
-        alternatives: [{ transcript: 'Mocked transcription' }]
-      }]
-    })
-  }))
+SpeechClient: jest.fn().mockImplementation(() => mockSpeechClient)
 }));
 
+const { transcribeGujarati, speechToText } = require('../Services/SpeechToText');
+
 describe('speechToText function', () => {
-  it('should transcribe audio data to text', async () => {
-    // Mock audio data (base64 encoded)
-    const audioData = Buffer.from('mock-audio-data', 'base64');
 
-    // Call the function
-    const transcription = await speechToText(audioData);
+  it('should return transcription with specified language code', async () => {
+    const languageCode = 'gu-IN';
+    const audioData = Buffer.from('mock-audio-data').toString('base64');
 
-    // Assertions
-    expect(transcription).toEqual('Mocked transcription');
-    expect(speech.SpeechClient).toHaveBeenCalled();
-    expect(speech.SpeechClient.mock.instances[0].recognize).toHaveBeenCalledWith({
-      audio: { content: audioData },
+    const results = await transcribeGujarati(audioData);
+
+    expect(mockSpeechClient.recognize).toHaveBeenCalledWith({
+      audio: { content: Buffer.from(audioData, 'base64') },
       config: {
         encoding: 'FLAC',
         sampleRateHertz: 48000,
-        languageCode: 'gu-IN',
+        languageCode: languageCode,
         audioChannelCount: 1,
         enableSeparateRecognitionPerChannel: false
       }
     });
+    expect(results).toEqual([mockRecognizeResponse.results]);
   });
 
   it('should throw an error if recognition fails', async () => {
-    // Mock audio data (base64 encoded)
-    const audioData = Buffer.from('mock-audio-data', 'base64');
+    const audioData = Buffer.from('mock-audio-data').toString('base64');
 
-    // Mock recognition failure
-    speech.SpeechClient.mockImplementationOnce(() => ({
-      recognize: jest.fn().mockRejectedValue(new Error('Recognition failed'))
-    }));
+    mockSpeechClient.recognize.mockRejectedValue(new Error('Recognition failed'));
 
-    // Ensure the function throws an error
-    await expect(speechToText(audioData)).rejects.toThrow('Recognition failed');
+    await expect(transcribeGujarati(audioData)).rejects.toThrow('Recognition failed');
   });
 });
