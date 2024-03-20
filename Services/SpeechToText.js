@@ -35,4 +35,12 @@ function transcribeGujarati(audioData) {
   return speechToText(audioData, "gu-IN");
 }
 
-module.exports = { transcribeGujarati, speechToText };
+function transcribeEnglish(audioData) {
+  return speechToText(audioData, "en-GB");
+}
+
+module.exports = {
+  transcribeGujarati,
+  transcribeEnglish,
+  speechToText
+};
