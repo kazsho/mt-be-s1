@@ -1,4 +1,7 @@
-const { transcribeGujarati, transcribeEnglish } = require("../Services/SpeechToText");
+const {
+  transcribeGujarati,
+  transcribeEnglish,
+} = require("../Services/SpeechToText");
 const { callOpenAIWithTranscription } = require("../Services/PromptAI");
 const { textToSpeech } = require("../Services/TextToSpeech");
 
@@ -12,22 +15,22 @@ async function receive(req, res) {
     return res.status(400).send("No file uploaded.");
   }
   try {
-    // This binary audio data can be saved to a database at this point. 
+    // This binary audio data can be saved to a database at this point.
     // No need to save to disk!
     const userAudioData = req.file.buffer;
 
-    // // Call Google Cloud Speech-to-Text APIs
+    // Call Google Cloud Speech-to-Text APIs
     const gujaratiTranscription = await transcribeGujarati(userAudioData);
     const englishTranscription = await transcribeEnglish(userAudioData);
 
-    // // Ask for GPT reply asynchronously
-    // const textReplyFromGPT = await callOpenAIWithTranscription(
-    //   gujaratiTranscription,
-    //   englishTranscription
-    // );
+    // Ask for GPT reply asynchronously
+    const textReplyFromGPT = await callOpenAIWithTranscription(
+      gujaratiTranscription,
+      englishTranscription
+    );
 
     // Mock GPT reply for debugging
-    const textReplyFromGPT = "This is a mock reply from GPT";
+    // const textReplyFromGPT = "This is a mock reply from GPT";
 
     // Generate text-to-speech audio from the language model
     const speechReplyFromGPT = await textToSpeech(textReplyFromGPT);
@@ -37,8 +40,8 @@ async function receive(req, res) {
     // const audioFile = await fs.readFile(speechFilePath);
 
     res.status(200).json({
-      userAudio: userAudioData.toString('base64'), // (The original request audio)
-      modelAudio: speechReplyFromGPT.toString('base64'),
+      userAudio: userAudioData.toString("base64"), // (The original request audio)
+      modelAudio: speechReplyFromGPT.toString("base64"),
       userTranscription: englishTranscription,
       modelTranscription: textReplyFromGPT,
     });

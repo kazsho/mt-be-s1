@@ -24,13 +24,16 @@ async function speechToText(audioData, languageCode) {
     };
 
     const [response] = await client.recognize(request);
-    return response.results;
+    const transcripts = response.results.map(
+      (result) => result.alternatives[0].transcript
+    );
+    console.log(transcripts);
+    return transcripts;
   } catch (error) {
     console.error("ERROR:", error);
     throw error;
   }
 }
-
 function transcribeGujarati(audioData) {
   return speechToText(audioData, "gu-IN");
 }
