@@ -19,11 +19,12 @@ https://mt-be-s1.onrender.com/
 
 # project Aim:
 
-have the audio received from the front end sent to an Ai module then the reply gets sent back to the user in a speech formate
+this project is the back end of a language learning app that is a speech to speech interface.
+This project will take in audio that is sent from the frontend transcribe it then send it to open AI where it gets a reply then it sends it back in audio formate to the front end
 
 # Installs:
 
-you will need to install the following dependencies to achieve that `npm install $$` change the `$$` with one of the following:
+you will need to install the following dependencies to achieve that use `npm install` or `npm install $$` change the `$$` with one of the following:
 
     `@google-cloud/speech`
     `cors`
@@ -36,6 +37,16 @@ you will need to install the following dependencies to achieve that `npm install
 
     you will need to install a devDependencies`nodemon` to achieve that `npm install -D nodemon`
 
+# setting-up:
+
+create a .env file that includes:
+'PORT' -use a port number that you would prefer using . if no port is selected then it will default to port 3000
+'DB_URL'- this is where you will include your Database url from wherever you will be hosting it
+'OPENAI_API_KEY'- this is the key that you can get from open Ai platform
+<br>
+create a key.json file that includes:
+the json key provided by google speech to text service
+
 # routes:
 
 there is a receive route that will take in a sound and then will transcript it send it to the ai and then send speech and transcription back
@@ -45,3 +56,7 @@ there is a conversation Array route that will show the open AI array of conversa
 # Database:
 
 there is a database that will be connected the information of the user for the individual accounts as well as it will save the conversation array and audio files that the user have had with the AI
+
+# authentication:
+
+this project includes authentication with a token system for the individuals accounts, each individual will have their own account to store their data and conversation.

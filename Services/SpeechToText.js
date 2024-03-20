@@ -12,11 +12,7 @@ async function speechToText(audioData, languageCode) {
       content: audioBytes,
     };
     const config = {
-      // encoding: "FLAC",
-      // sampleRateHertz: 48000,
       languageCode: languageCode,
-      // audioChannelCount: 1,
-      // enableSeparateRecognitionPerChannel: false,
     };
     const request = {
       audio: audio,
