@@ -34,7 +34,7 @@ English transcription: ${englishTranscription}`,
     content: JSON.stringify(reply),
   });
 
-  console.log(reply)
+  console.log('log' + reply)
 
   return reply.gpt_response;
 }
