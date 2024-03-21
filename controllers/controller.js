@@ -21,19 +21,18 @@ async function receive(req, res) {
     const englishTranscription = await transcribeEnglish(userAudioData);
 
     // Ask for GPT reply asynchronously
-    const textReplyFromGPT = await callOpenAIWithTranscription(
+    const replyFromGPT = await callOpenAIWithTranscription(
       gujaratiTranscription,
       englishTranscription
     );
 
     // Generate text-to-speech audio from the language model
-    const speechReplyFromGPT = await textToSpeech(textReplyFromGPT);
+    const speechReplyFromGPT = await textToSpeech(replyFromGPT.gpt_response);
 
     res.status(200).json({
       userAudio: userAudioData.toString("base64"), // (The original request audio)
       modelAudio: speechReplyFromGPT.toString("base64"),
-      userTranscription: englishTranscription,
-      modelTranscription: textReplyFromGPT,
+      modelTranscription: replyFromGPT,
     });
   } catch (error) {
     console.error("Error while transcribing:", error);
