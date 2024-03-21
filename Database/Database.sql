@@ -6,19 +6,19 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS languages;
 
 CREATE TABLE languages (
-    language_id INT AUTO_INCREMENT PRIMARY KEY,
+    language_id SERIAL PRIMARY KEY,
     language_name VARCHAR(100) UNIQUE NOT NULL
 );
 
 CREATE TABLE users (
-    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id SERIAL PRIMARY KEY,
     username VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     email VARCHAR(255)
 );
 
 CREATE TABLE tokens (
-    token_id INT AUTO_INCREMENT PRIMARY KEY,
+    token_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     token VARCHAR(255) UNIQUE NOT NULL,
     expiration TIMESTAMP NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE tokens (
 );
 
 CREATE TABLE conversations (
-    conversation_id INT AUTO_INCREMENT PRIMARY KEY,
+    conversation_id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     language_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(user_id),
@@ -34,15 +34,16 @@ CREATE TABLE conversations (
 );
 
 CREATE TABLE audios (
-    audio_id INT AUTO_INCREMENT PRIMARY KEY,
+    audio_id SERIAL PRIMARY KEY,
     conversation_id INT NOT NULL,
-    audio_data BLOB, 
+    audio_data BYTEA, 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (conversation_id) REFERENCES conversations(conversation_id)
 );
 
+
 CREATE TABLE transcripts (
-    transcript_id INT AUTO_INCREMENT PRIMARY KEY,
+    transcript_id SERIAL PRIMARY KEY,
     conversation_id INT NOT NULL,
     transcript TEXT NOT NULL,
     audio_id INT NOT NULL,
