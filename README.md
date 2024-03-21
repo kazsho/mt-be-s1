@@ -34,6 +34,8 @@ you will need to install the following dependencies to achieve that use `npm ins
     `multer`
     `openai`
     `pg`
+    `uuid`
+    `bcrypt`
 
     you will need to install a devDependencies`nodemon` to achieve that `npm install -D nodemon`
 

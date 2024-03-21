@@ -9,6 +9,7 @@ const path = require("path");
 const logRoutes = require("./middleware/logger");
 const bodyParser = require("body-parser");
 const audioController = require("./controllers/controller");
+const authController = require("./controllers/authController");
 
 const speechFolderPath = path.resolve("./speechFile");
 
@@ -33,6 +34,10 @@ app.get("/", (req, res) => {
     description: "An app that utilizes AI to help teach languages",
   });
 });
+
+//login and register routes
+app.post("/login", authController.login);
+app.post("/register", authController.register);
 
 // Route to receive user's recorded speech audio and sends back an ai response
 app.post("/receive", upload.single("audio"), audioController.receive);
