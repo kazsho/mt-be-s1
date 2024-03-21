@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40.9% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/22</span>
+                <span class='fraction'>6/15</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">40.9% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/22</span>
+                <span class='fraction'>6/15</span>
             </div>
         
             
@@ -114,15 +114,13 @@
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -131,16 +129,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -149,7 +137,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -162,7 +150,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -171,54 +165,51 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const transcribeGujarati = require("../Services/SpeechToText");
-const fs = require("fs");
-const path = require("path");
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { transcribeGujarati, transcribeEnglish } = require("../Services/SpeechToText");
 const { callOpenAIWithTranscription } = require("../Services/PromptAI");
-const textToSpeech = require("../Services/TextToSpeech");
-const speechFolderPath = require("../app");
+const { textToSpeech } = require("../Services/TextToSpeech");
+&nbsp;
+// const path = require("path");
+// const fs = require("fs").promises;
+// const speechFolderPath = require("../app");
 &nbsp;
 async function receive(req, res) {
-  //handle errors on the data coming in
+  // Handle errors on the data coming in
   <span class="missing-if-branch" title="else path not taken" >E</span>if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    //receive audio
-    const audioData = <span class="cstat-no" title="statement not covered" >fs.readFileSync(</span>
-      path.join(__dirname, "..", req.file.path)
-    );
+    // This binary audio data can be saved to a database at this point. 
+    // No need to save to disk!
+    const userAudioData = <span class="cstat-no" title="statement not covered" >req.file.buffer;</span>
 &nbsp;
-    //i call the speech to text
-    const transcription = <span class="cstat-no" title="statement not covered" >await transcribeGujarati(audioData);</span>
+    // // Call Google Cloud Speech-to-Text APIs
+    const gujaratiTranscription = <span class="cstat-no" title="statement not covered" >await transcribeGujarati(userAudioData);</span>
+    const englishTranscription = <span class="cstat-no" title="statement not covered" >await transcribeEnglish(userAudioData);</span>
 &nbsp;
-    // ask for GPT reply
-    const reply = <span class="cstat-no" title="statement not covered" >await callOpenAIWithTranscription(transcription);</span>
+    // // Ask for GPT reply asynchronously
+    // const textReplyFromGPT = await callOpenAIWithTranscription(
+    //   gujaratiTranscription,
+    //   englishTranscription
+    // );
 &nbsp;
-    // Generate speech file
-<span class="cstat-no" title="statement not covered" >    await textToSpeech(reply);</span>
+    // Mock GPT reply for debugging
+    const textReplyFromGPT = <span class="cstat-no" title="statement not covered" >"This is a mock reply from GPT";</span>
 &nbsp;
-    // find folder speech file
-    const speechFilePath = <span class="cstat-no" title="statement not covered" >path.join(speechFolderPath, "speech.mp3");</span>
-    const audioFile = <span class="cstat-no" title="statement not covered" >fs.readFileSync(speechFilePath);</span>
+    // Generate text-to-speech audio from the language model
+    const speechReplyFromGPT = <span class="cstat-no" title="statement not covered" >await textToSpeech(textReplyFromGPT);</span>
 &nbsp;
-    // Set response indicate  an audio
-<span class="cstat-no" title="statement not covered" >    res.set({</span>
-      "Content-Type": "audio/mpeg",
-      "Content-Disposition": "attachment; filename=speech.mp3",
+    // // Find folder speech file
+    // const speechFilePath = path.join(speechFolderPath, "speech.mp3");
+    // const audioFile = await fs.readFile(speechFilePath);
+&nbsp;
+<span class="cstat-no" title="statement not covered" >    res.status(200).json({</span>
+      userAudio: userAudioData.toString('base64'), // (The original request audio)
+      modelAudio: speechReplyFromGPT.toString('base64'),
+      userTranscription: englishTranscription,
+      modelTranscription: textReplyFromGPT,
     });
-&nbsp;
-    // Send the audio to frontend
-<span class="cstat-no" title="statement not covered" >    res.write(audioFile);</span>
-&nbsp;
-    //send the transcription back too
-<span class="cstat-no" title="statement not covered" >    res.write("\nTranscription:\n" + transcription);</span>
-&nbsp;
-    //end response
-    //send both in the same request to ensure no further processing
-<span class="cstat-no" title="statement not covered" >    res.end();</span>
   } catch (error) {
-    //error handling
 <span class="cstat-no" title="statement not covered" >    console.error("Error while transcribing:", error);</span>
 <span class="cstat-no" title="statement not covered" >    res.status(500).json({ error: "server error" });</span>
   }
@@ -232,7 +223,7 @@ module.exports = { receive };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-19T23:44:14.778Z
+                at 2024-03-21T10:20:53.970Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
