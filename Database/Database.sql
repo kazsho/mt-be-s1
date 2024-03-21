@@ -41,7 +41,6 @@ CREATE TABLE audios (
     FOREIGN KEY (conversation_id) REFERENCES conversations(conversation_id)
 );
 
-
 CREATE TABLE transcripts (
     transcript_id SERIAL PRIMARY KEY,
     conversation_id INT NOT NULL,
