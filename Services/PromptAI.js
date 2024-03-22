@@ -8,7 +8,7 @@ const conversationArray = [
   {
     role: "system",
     content:
-      `Between the Gujarati transcription and the English transcription, choose the one which makes the most sense given the context. Your responses should exactly follow this if statement : 
+      `Your responses should exactly follow this if statement : 
       
       if ("practice" OR "roleplay"){
          question to ask user in JSON = {"gpt_response": "Who would you like me to roleplay as? Please provide as much information as possible, including their name, relationship to you, age and anything else that might be relevant."}
