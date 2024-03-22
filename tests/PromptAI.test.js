@@ -8,6 +8,9 @@ describe('callOpenAIWithTranscription function', () => {
   it('should add user input to conversationArray and return AI response', async () => {
     const gujaratiTranscription = 'તમે કેમ છો'
     const englishTranscription = 'How are you?'
+    
+    const response = await callOpenAIWithTranscription(gujaratiTranscription, englishTranscription);
+
     const chatCompletion = {
       chat: {
         completions: {
@@ -17,8 +20,6 @@ describe('callOpenAIWithTranscription function', () => {
         }
       }
     }
-    
-    const response = await callOpenAIWithTranscription(gujaratiTranscription, englishTranscription);
 
     expect(conversationArray).toHaveLength(2);
     expect(conversationArray[0].role).toBe('user');
