@@ -12,11 +12,7 @@ async function speechToText(audioData, languageCode) {
       content: audioBytes,
     };
     const config = {
-      encoding: "FLAC",
-      sampleRateHertz: 48000,
       languageCode: languageCode,
-      audioChannelCount: 1,
-      enableSeparateRecognitionPerChannel: false,
     };
     const request = {
       audio: audio,
@@ -24,13 +20,16 @@ async function speechToText(audioData, languageCode) {
     };
 
     const [response] = await client.recognize(request);
-    return response.results;
+    const transcripts = response.results.map(
+      (result) => result.alternatives[0].transcript
+    );
+    console.log(transcripts);
+    return transcripts;
   } catch (error) {
     console.error("ERROR:", error);
     throw error;
   }
 }
-
 function transcribeGujarati(audioData) {
   return speechToText(audioData, "gu-IN");
 }

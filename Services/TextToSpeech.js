@@ -12,15 +12,15 @@ if (!fs.existsSync(speechFolderPath)) {
   fs.mkdirSync(speechFolderPath);
 }
 
-async function textToSpeech(text) {
+async function textToSpeech(textReplyFromGPT) {
   try {
     const mp3 = await openai.audio.speech.create({
       model: "tts-1",
       voice: "nova",
-      input: "This is a test audio reading. Raisins are made from grapes. ",
+      input: textReplyFromGPT,
     });
     const buffer = Buffer.from(await mp3.arrayBuffer());
-    return buffer; // Return the buffer (binary data) 
+    return buffer; // Return the buffer (binary data)
   } catch (error) {
     console.error("ERROR:", error);
     throw error;

@@ -9,6 +9,7 @@ const path = require("path");
 const logRoutes = require("./middleware/logger");
 const bodyParser = require("body-parser");
 const audioController = require("./controllers/controller");
+const authController = require("./controllers/authController");
 
 const speechFolderPath = path.resolve("./speechFile");
 
@@ -27,26 +28,6 @@ app.use(bodyParser.raw({ type: "audio/*", limit: "10mb" }));
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-// // Routes
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, "uploads/"); // Destination folder for storing uploaded files
-//   },
-//   filename: function (req, file, cb) {
-//     cb(
-//       null,
-//       file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-//     ); // File naming convention
-//   },
-// });
-
-// // Initialize multer middleware
-// const upload = multer({
-//   storage: storage,
-//   limits: { fileSize: 10000000 }, // Limit file size (optional)
-// });
-
-// Routes
 app.get("/", (req, res) => {
   res.json({
     name: "Language app",
@@ -54,7 +35,11 @@ app.get("/", (req, res) => {
   });
 });
 
-// Route to receive user's recorded speech audio 
+//login and register routes
+app.post("/login", authController.login);
+app.post("/register", authController.register);
+
+// Route to receive user's recorded speech audio and sends back an ai response
 app.post("/receive", upload.single("audio"), audioController.receive);
 
 //conversation array from ai
@@ -62,4 +47,4 @@ app.get("/conversation", async (req, res) => {
   res.json(conversationArray);
 });
 
-(module.exports = app), speechFolderPath; 
+(module.exports = app), speechFolderPath;
