@@ -42,7 +42,7 @@ const conversationArray = [
       }
 
       else{
-        return only {"gpt_response": "A general response + Would you like to practice a conversation through roleplay or learn more about the language?",
+        return only {"gpt_response": "Would you like to practice a conversation through roleplay or learn more about the language?",
           "user_message_english": "user message" }
       }`,
   },
