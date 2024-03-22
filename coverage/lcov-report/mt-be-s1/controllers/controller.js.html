@@ -106,20 +106,12 @@
 <a name='L41'></a><a href='#L41'>41</a>
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
-<a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a>
-<a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L44'></a><a href='#L44'>44</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -137,15 +129,6 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -154,6 +137,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -165,49 +149,41 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const { transcribeGujarati, transcribeEnglish } = require("../Services/SpeechToText");
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const {
+  transcribeGujarati,
+  transcribeEnglish,
+} = require("../Services/SpeechToText");
 const { callOpenAIWithTranscription } = require("../Services/PromptAI");
 const { textToSpeech } = require("../Services/TextToSpeech");
 &nbsp;
-// const path = require("path");
-// const fs = require("fs").promises;
-// const speechFolderPath = require("../app");
-&nbsp;
 async function receive(req, res) {
-  // Handle errors on the data coming in
+  //handle errors on the data coming in
+&nbsp;
   <span class="missing-if-branch" title="else path not taken" >E</span>if (!req.file) {
     return res.status(400).send("No file uploaded.");
   }
 <span class="cstat-no" title="statement not covered" >  try {</span>
-    // This binary audio data can be saved to a database at this point. 
+    // This binary audio data can be saved to a database at this point.
     // No need to save to disk!
     const userAudioData = <span class="cstat-no" title="statement not covered" >req.file.buffer;</span>
 &nbsp;
-    // // Call Google Cloud Speech-to-Text APIs
+    // Call Google Cloud Speech-to-Text APIs
     const gujaratiTranscription = <span class="cstat-no" title="statement not covered" >await transcribeGujarati(userAudioData);</span>
     const englishTranscription = <span class="cstat-no" title="statement not covered" >await transcribeEnglish(userAudioData);</span>
 &nbsp;
-    // // Ask for GPT reply asynchronously
-    // const textReplyFromGPT = await callOpenAIWithTranscription(
-    //   gujaratiTranscription,
-    //   englishTranscription
-    // );
-&nbsp;
-    // Mock GPT reply for debugging
-    const textReplyFromGPT = <span class="cstat-no" title="statement not covered" >"This is a mock reply from GPT";</span>
+    // Ask for GPT reply asynchronously
+    const replyFromGPT = <span class="cstat-no" title="statement not covered" >await callOpenAIWithTranscription(</span>
+      gujaratiTranscription,
+      englishTranscription
+    );
 &nbsp;
     // Generate text-to-speech audio from the language model
-    const speechReplyFromGPT = <span class="cstat-no" title="statement not covered" >await textToSpeech(textReplyFromGPT);</span>
-&nbsp;
-    // // Find folder speech file
-    // const speechFilePath = path.join(speechFolderPath, "speech.mp3");
-    // const audioFile = await fs.readFile(speechFilePath);
+    const speechReplyFromGPT = <span class="cstat-no" title="statement not covered" >await textToSpeech(replyFromGPT.gpt_response);</span>
 &nbsp;
 <span class="cstat-no" title="statement not covered" >    res.status(200).json({</span>
-      userAudio: userAudioData.toString('base64'), // (The original request audio)
-      modelAudio: speechReplyFromGPT.toString('base64'),
-      userTranscription: englishTranscription,
-      modelTranscription: textReplyFromGPT,
+      userAudio: userAudioData.toString("base64"), // (The original request audio)
+      modelAudio: speechReplyFromGPT.toString("base64"),
+      modelTranscription: replyFromGPT,
     });
   } catch (error) {
 <span class="cstat-no" title="statement not covered" >    console.error("Error while transcribing:", error);</span>
@@ -223,7 +199,7 @@ module.exports = { receive };
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-21T14:22:50.519Z
+                at 2024-03-22T12:12:49.454Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
