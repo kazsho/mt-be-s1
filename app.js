@@ -1,5 +1,9 @@
 const express = require("express");
 const cors = require("cors");
+const profileRoute = require("./routers/profiles")
+const tokenRoute = require("./routers/tokens")
+const conversationRoute = require("./routers/conversations")
+
 const conversationArray = require("./Services/PromptAI");
 const multer = require("multer");
 
@@ -9,7 +13,6 @@ const path = require("path");
 const logRoutes = require("./middleware/logger");
 const bodyParser = require("body-parser");
 const audioController = require("./controllers/controller");
-const authController = require("./controllers/authController");
 
 const speechFolderPath = path.resolve("./speechFile");
 
@@ -25,6 +28,10 @@ app.use(express.json());
 app.use(logRoutes);
 app.use(bodyParser.raw({ type: "audio/*", limit: "10mb" }));
 
+app.use("/profiles", profileRoute)
+app.use("/tokens", tokenRoute)
+app.use("/conversations", conversationRoute)
+
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -34,10 +41,6 @@ app.get("/", (req, res) => {
     description: "An app that utilizes AI to help teach languages",
   });
 });
-
-//login and register routes
-app.post("/login", authController.login);
-app.post("/register", authController.register);
 
 // Route to receive user's recorded speech audio and sends back an ai response
 app.post("/receive", upload.single("audio"), audioController.receive);
