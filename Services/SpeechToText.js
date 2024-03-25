@@ -1,7 +1,7 @@
 const speech = require("@google-cloud/speech");
 
 const client = new speech.SpeechClient({
-  keyFilename: "./Database/key.json",
+  keyFilename: "./key.json",
 });
 
 async function speechToText(audioData, languageCode) {
