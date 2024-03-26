@@ -43,11 +43,11 @@ class VoiceNotes {
   }
 
   static async create(data) {
-    const { audio_id, conversation_id, audio_data } = data;
+    const { conversation_id, audio_data } = data;
 
     let response = await db.query(
-      "INSERT INTO conversations (audio_id, conversation_id, audio_data) VALUES ($1, $2, $3, $4) RETURNING *;",
-      [audio_id, conversation_id, audio_data]
+      "INSERT INTO audios ( conversation_id, audio_data) VALUES ( $1, $2) RETURNING *;",
+      [conversation_id, audio_data]
     );
 
     if (response.rows.length === 0) {
@@ -60,10 +60,10 @@ class VoiceNotes {
   async update(data) {
     const response = await db.query(
       "UPDATE audios SET conversation_title = $1 WHERE audios_id = $2 RETURNING *;",
-      [data.conversation_title]
+      [data.conversation_title, this.audio_id]
     );
     if (response.rows.length != 1) {
-      throw new Error("Unable to update conversation title.");
+      throw new Error("Unable to update audio.");
     }
     return new VoiceNotes(response.rows[0]);
   }
