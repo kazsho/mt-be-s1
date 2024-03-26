@@ -27,7 +27,7 @@ async function receive(req, res) {
     );
 
     // Generate text-to-speech audio from the language model
-    const speechReplyFromGPT = await textToSpeech(replyFromGPT.gpt_response_gujarati);
+    const speechReplyFromGPT = await textToSpeech(replyFromGPT.gpt_response);
 
     res.status(200).json({
       userAudio: userAudioData.toString("base64"), // (The original request audio)

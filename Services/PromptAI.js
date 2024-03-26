@@ -63,7 +63,7 @@ async function callOpenAIWithTranscription(
   });
   const reply = JSON.parse(chatCompletion.choices[0].message.content);
   conversationArray.push({
-    role: "assistant",
+    role: "user",
     content: JSON.stringify(reply),
   });
 
