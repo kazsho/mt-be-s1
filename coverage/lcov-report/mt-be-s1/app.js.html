@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.85% </span>
+                <span class="strong">94.59% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>26/28</span>
+                <span class='fraction'>35/37</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.85% </span>
+                <span class="strong">94.59% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>26/28</span>
+                <span class='fraction'>35/37</span>
             </div>
         
             
@@ -113,8 +113,24 @@
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -136,6 +152,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -152,10 +172,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -163,8 +179,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const express = require("express");
 const cors = require("cors");
+const profileRoute = require("./routers/profiles");
+const tokenRoute = require("./routers/tokens");
+const conversationRoute = require("./routers/conversations");
+const conversationRouter = require("./routers/conversations");
+const profileRouter = require("./routers/profiles");
+&nbsp;
 const conversationArray = require("./Services/PromptAI");
 const multer = require("multer");
 &nbsp;
@@ -174,7 +200,7 @@ const path = require("path");
 const logRoutes = require("./middleware/logger");
 const bodyParser = require("body-parser");
 const audioController = require("./controllers/controller");
-const authController = require("./controllers/authController");
+const audiosRouter = require("./routers/voiceNotes");
 &nbsp;
 const speechFolderPath = path.resolve("./speechFile");
 &nbsp;
@@ -190,6 +216,10 @@ app.use(express.json());
 app.use(logRoutes);
 app.use(bodyParser.raw({ type: "audio/*", limit: "10mb" }));
 &nbsp;
+app.use("/profiles", profileRoute);
+app.use("/tokens", tokenRoute);
+app.use("/conversations", conversationRoute);
+&nbsp;
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 &nbsp;
@@ -200,10 +230,6 @@ app.get("/", (req, res) =&gt; {
   });
 });
 &nbsp;
-//login and register routes
-app.post("/login", authController.login);
-app.post("/register", authController.register);
-&nbsp;
 // Route to receive user's recorded speech audio and sends back an ai response
 app.post("/receive", upload.single("audio"), audioController.receive);
 &nbsp;
@@ -211,6 +237,10 @@ app.post("/receive", upload.single("audio"), audioController.receive);
 app.get("/conversation", <span class="fstat-no" title="function not covered" >as</span>ync (req, res) =&gt; {
 <span class="cstat-no" title="statement not covered" >  res.json(conversationArray);</span>
 });
+&nbsp;
+app.use("/convo", conversationRouter);
+app.use("/profile", profileRouter);
+app.use("/audios", audiosRouter);
 &nbsp;
 (module.exports = app), speechFolderPath;
 &nbsp;</pre></td></tr></table></pre>
@@ -220,7 +250,7 @@ app.get("/conversation", <span class="fstat-no" title="function not covered" >as
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-22T12:12:49.454Z
+                at 2024-03-26T22:22:52.390Z
             </div>
         <script src="../prettify.js"></script>
         <script>

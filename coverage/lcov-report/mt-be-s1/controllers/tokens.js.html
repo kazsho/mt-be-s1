@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for mt-be-s1/Services/SpeechToText.js</title>
+    <title>Code coverage report for mt-be-s1/controllers/tokens.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">mt-be-s1/Services</a> SpeechToText.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">mt-be-s1/controllers</a> tokens.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">17.64% </span>
+                <span class="strong">7.69% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/17</span>
+                <span class='fraction'>2/26</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">17.64% </span>
+                <span class="strong">7.69% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/17</span>
+                <span class='fraction'>2/26</span>
             </div>
         
             
@@ -107,21 +107,14 @@
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
 <a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -131,71 +124,84 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const speech = require("@google-cloud/speech");
+<span class="cline-any cline-yes">2x</span></td><td class="text"><pre class="prettyprint lang-js">const Token = require("../Models/Tokens");
 &nbsp;
-const client = new speech.SpeechClient({
-  keyFilename: "./key.json",
-});
-&nbsp;
-async function <span class="fstat-no" title="function not covered" >speechToText(</span>audioData, languageCode) {
-<span class="cstat-no" title="statement not covered" >  try {</span>
-    const audioBytes = <span class="cstat-no" title="statement not covered" >Buffer.from(audioData, "base64");</span>
-&nbsp;
-    const audio = <span class="cstat-no" title="statement not covered" >{</span>
-      content: audioBytes,
-    };
-    const config = <span class="cstat-no" title="statement not covered" >{</span>
-      languageCode: languageCode,
-    };
-    const request = <span class="cstat-no" title="statement not covered" >{</span>
-      audio: audio,
-      config: config,
-    };
-&nbsp;
-    const [response] = <span class="cstat-no" title="statement not covered" >await client.recognize(request);</span>
-    const transcripts = <span class="cstat-no" title="statement not covered" >response.results.map(</span>
-<span class="fstat-no" title="function not covered" >      (r</span>esult) =&gt; <span class="cstat-no" title="statement not covered" >result.alternatives[0].transcript</span>
-    );
-<span class="cstat-no" title="statement not covered" >    console.log(transcripts);</span>
-<span class="cstat-no" title="statement not covered" >    return transcripts;</span>
-  } catch (error) {
-<span class="cstat-no" title="statement not covered" >    console.error("ERROR:", error);</span>
-<span class="cstat-no" title="statement not covered" >    throw error;</span>
-  }
-}
-function <span class="fstat-no" title="function not covered" >transcribeGujarati(</span>audioData) {
-<span class="cstat-no" title="statement not covered" >  return speechToText(audioData, "gu-IN");</span>
+async function <span class="fstat-no" title="function not covered" >index(</span>req, res) {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+        const tokens = <span class="cstat-no" title="statement not covered" >await Token.getAll();</span>
+<span class="cstat-no" title="statement not covered" >        res.status(200).json(tokens);</span>
+    } catch(e) {
+<span class="cstat-no" title="statement not covered" >        res.status(500).json({error: e.message})</span>
+    }
 }
 &nbsp;
-function <span class="fstat-no" title="function not covered" >transcribeEnglish(</span>audioData) {
-<span class="cstat-no" title="statement not covered" >  return speechToText(audioData, "en-GB");</span>
+async function <span class="fstat-no" title="function not covered" >show </span>(req, res) {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+        let token = <span class="cstat-no" title="statement not covered" >req.params.token;</span>
+<span class="cstat-no" title="statement not covered" >        console.log("token:  "+token)</span>
+        const tokenId = <span class="cstat-no" title="statement not covered" >await Token.getOneByToken(token);</span>
+<span class="cstat-no" title="statement not covered" >        console.log("token entry: "+tokenId)</span>
+<span class="cstat-no" title="statement not covered" >        res.status(200).json(tokenId)</span>
+    } catch(e) {
+<span class="cstat-no" title="statement not covered" >        res.status(404).json({error: e.message})</span>
+    }
 }
 &nbsp;
-module.exports = {
-  transcribeGujarati,
-  transcribeEnglish,
-  speechToText
-};</pre></td></tr></table></pre>
+async function <span class="fstat-no" title="function not covered" >create </span>(req, res) {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+        const id = <span class="cstat-no" title="statement not covered" >req.params.id;</span>
+        const newToken = <span class="cstat-no" title="statement not covered" >await Token.create(id);</span>
+<span class="cstat-no" title="statement not covered" >        res.status(201).json(newToken);</span>
+    } catch(e) {
+<span class="cstat-no" title="statement not covered" >        res.status(400).json({error: e.message});</span>
+    }
+}
+&nbsp;
+async function <span class="fstat-no" title="function not covered" >destroy </span>(req, res) {
+<span class="cstat-no" title="statement not covered" >    try {</span>
+<span class="cstat-no" title="statement not covered" >        console.log("start")</span>
+        const tokenCode = <span class="cstat-no" title="statement not covered" >req.params.token;</span>
+        const token = <span class="cstat-no" title="statement not covered" >await Token.getOneByToken(tokenCode);</span>
+<span class="cstat-no" title="statement not covered" >        console.log("almost"+tokenCode)</span>
+        const result = <span class="cstat-no" title="statement not covered" >await token.destroy(tokenCode);</span>
+<span class="cstat-no" title="statement not covered" >        res.status(204).end();</span>
+    } catch (e) {
+<span class="cstat-no" title="statement not covered" >        res.status(404).json({error: e.message})</span>
+    }
+};
+&nbsp;
+module.exports={ index, show, create, destroy }</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
