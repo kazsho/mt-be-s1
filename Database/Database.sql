@@ -62,9 +62,9 @@ VALUES ('demo', 'demo@demo.com', crypt('demo', gen_salt('bf', 10)));
 
 INSERT INTO conversations (account_id, conversation_title, language, timestamp)
 VALUES
-(1, 'Conversation 1', 'Gujurati', NOW()),
+(1, 'Conversation 1', 'Gujarati', NOW()),
 (1, 'Conversation 2', 'Urdu', NOW() - INTERVAL '1 day'),
-(1, 'Conversation 3', 'Yuroba', NOW() - INTERVAL '2 days'),
+(1, 'Conversation 3', 'Yorùbá', NOW() - INTERVAL '2 days'),
 (1, 'Conversation 4', 'Swahili', NOW() - INTERVAL '3 days'),
 (1, 'Conversation 5', 'Korean', NOW() - INTERVAL '4 days'),
 (1, 'Conversation 6', 'Amazigh', NOW() - INTERVAL '5 days'),
