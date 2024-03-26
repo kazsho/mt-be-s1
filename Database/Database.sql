@@ -1,9 +1,9 @@
 DROP TABLE IF EXISTS profiles CASCADE;
 DROP TABLE IF EXISTS tokens;
-DROP TABLE IF EXISTS conversations;
-DROP TABLE IF EXISTS languages;
-DROP TABLE IF EXISTS audios;
-DROP TABLE IF EXISTS transcripts;
+DROP TABLE IF EXISTS conversations CASCADE;
+DROP TABLE IF EXISTS languages CASCADE;
+DROP TABLE IF EXISTS audios CASCADE;
+DROP TABLE IF EXISTS transcripts CASCADE;
 
 CREATE TABLE profiles (
     account_id INT GENERATED ALWAYS AS IDENTITY,
@@ -32,30 +32,33 @@ CREATE TABLE conversations (
 );
 
 CREATE TABLE languages (
-    language_id SERIAL PRIMARY KEY,
+    language_id INT GENERATED ALWAYS AS IDENTITY,
     language_name VARCHAR(100) UNIQUE NOT NULL
 );
 
 CREATE TABLE audios (
-    audio_id SERIAL PRIMARY KEY,
+    audio_id INT GENERATED ALWAYS AS IDENTITY,
     conversation_id INT NOT NULL,
     audio_data BYTEA, 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (audio_id),
     FOREIGN KEY (conversation_id) REFERENCES conversations(conversation_id)
 );
 
 CREATE TABLE transcripts (
-    transcript_id SERIAL PRIMARY KEY,
+    transcript_id INT GENERATED ALWAYS AS IDENTITY,
     conversation_id INT NOT NULL,
     transcript TEXT NOT NULL,
     audio_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (transcript_id),
     FOREIGN KEY (conversation_id) REFERENCES conversations(conversation_id),
     FOREIGN KEY (audio_id) REFERENCES audios(audio_id)
 );
 
 INSERT INTO profiles (name, email, password)
-VALUES ('rae', 'r@r.r', crypt('r', gen_salt('bf', 10)));
+VALUES ('demo', 'demo@demo.com', crypt('demo', gen_salt('bf', 10)));
+
 
 INSERT INTO conversations (account_id, conversation_title, language, timestamp)
 VALUES
