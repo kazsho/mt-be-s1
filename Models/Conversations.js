@@ -20,7 +20,7 @@ class Conversation {
     static async getByUser(id) {
         const response = await db.query("SELECT * FROM conversations WHERE account_id=$1;", [id]);
 
-        if(response.rows.length === 1) {
+        if(response.rows.length === 0) {
             throw new Error("Unable to locate conversations for the user.")
         }
 
