@@ -4,6 +4,7 @@ const profileRoute = require("./routers/profiles");
 const tokenRoute = require("./routers/tokens");
 const conversationRoute = require("./routers/conversations");
 const conversationRouter = require("./routers/conversations");
+const profileRouter = require("./routers/profiles");
 
 const conversationArray = require("./Services/PromptAI");
 const multer = require("multer");
@@ -14,6 +15,7 @@ const path = require("path");
 const logRoutes = require("./middleware/logger");
 const bodyParser = require("body-parser");
 const audioController = require("./controllers/controller");
+const audiosRouter = require("./routers/voiceNotes");
 
 const speechFolderPath = path.resolve("./speechFile");
 
@@ -52,5 +54,7 @@ app.get("/conversation", async (req, res) => {
 });
 
 app.use("/convo", conversationRouter);
+app.use("/profile", profileRouter);
+app.use("/audios", audiosRouter);
 
 (module.exports = app), speechFolderPath;

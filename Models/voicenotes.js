@@ -1,89 +1,80 @@
-// const db = require("../Database/connect");
+const db = require("../Database/connect");
 
-// class voicenotes {
-//   constructor({
-//     conversation_id,
-//     account_id,
-//     conversation_title,
-//     language,
-//     timestamp,
-//   }) {
-//     this.conversation_id = conversation_id;
-//     this.account_id = account_id;
-//     this.conversation_title = conversation_title;
-//     this.language = language;
-//     this.timestamp = timestamp;
-//   }
+class VoiceNotes {
+  constructor({ audio_id, conversation_id, audio_data }) {
+    this.conversation_id = conversation_id;
+    this.audio_id = audio_id;
+    this.audio_data = audio_data;
+    this.conversation_title = conversation_title;
+  }
 
-//   static async getAll() {
-//     const response = await db.query("SELECT * FROM conversations;");
-//     if (response.rows.length === 0) {
-//       throw new Error("No conversations available.");
-//     }
-//     return response.rows.map((c) => new Conversation(c));
-//   }
+  static async getAll() {
+    const response = await db.query("SELECT * FROM audios;");
+    if (response.rows.length === 0) {
+      throw new Error("No audios available.");
+    }
+    return response.rows.map((c) => new VoiceNotes(c));
+  }
 
-//   static async getByUser(id) {
-//     const response = await db.query(
-//       "SELECT * FROM conversations WHERE account_id=$1;",
-//       [id]
-//     );
+  static async getByConversation(id) {
+    const response = await db.query(
+      "SELECT * FROM audios WHERE conversation_id=$1;",
+      [id]
+    );
 
-//     if (response.rows.length === 1) {
-//       throw new Error("Unable to locate conversations for the user.");
-//     }
+    if (response.rows.length === 1) {
+      throw new Error("Unable to locate audios for the conversation.");
+    }
 
-//     return response.rows.map((c) => new Conversation(c));
-//   }
+    return response.rows.map((c) => new VoiceNotes(c));
+  }
 
-//   static async getOneById(id) {
-//     const response = await db.query(
-//       "SELECT * FROM conversations WHERE conversation_id=$1;",
-//       [id]
-//     );
+  static async getOneById(id) {
+    const response = await db.query(
+      "SELECT * FROM audios WHERE conversation_id=$1;",
+      [id]
+    );
 
-//     if (response.rows.length != 1) {
-//       throw new Error("Unable to locate conversation.");
-//     }
+    if (response.rows.length != 1) {
+      throw new Error("Unable to locate audios.");
+    }
 
-//     return new Conversation(response.rows[0]);
-//   }
+    return new VoiceNotes(response.rows[0]);
+  }
 
-//   static async create(data) {
-//     const { account_id, conversation_title, language } = data;
+  static async create(data) {
+    const { audio_id, conversation_id, audio_data } = data;
 
-//     const timestamp = new Date();
+    let response = await db.query(
+      "INSERT INTO conversations (audio_id, conversation_id, audio_data) VALUES ($1, $2, $3, $4) RETURNING *;",
+      [audio_id, conversation_id, audio_data]
+    );
 
-//     let response = await db.query(
-//       "INSERT INTO conversations (account_id, conversation_title, language, timestamp) VALUES ($1, $2, $3, $4) RETURNING *;",
-//       [account_id, conversation_title, language, timestamp]
-//     );
+    if (response.rows.length === 0) {
+      throw new Error("Unable to save voice recordings.");
+    }
 
-//     if (response.rows.length === 0) {
-//       throw new Error("Unable to create conversation.");
-//     }
+    return new VoiceNotes(response.rows[0]);
+  }
 
-//     return new Conversation(response.rows[0]);
-//   }
+  async update(data) {
+    const response = await db.query(
+      "UPDATE audios SET conversation_title = $1 WHERE audios_id = $2 RETURNING *;",
+      [data.conversation_title]
+    );
+    if (response.rows.length != 1) {
+      throw new Error("Unable to update conversation title.");
+    }
+    return new VoiceNotes(response.rows[0]);
+  }
 
-//   async update(data) {
-//     const response = await db.query(
-//       "UPDATE conversations SET conversation_title = $1 WHERE conversation_id = $2 RETURNING *;",
-//       [data.conversation_title, this.conversation_id]
-//     );
-//     if (response.rows.length != 1) {
-//       throw new Error("Unable to update conversation title.");
-//     }
-//     return new Conversation(response.rows[0]);
-//   }
+  async destroy() {
+    const response = await db.query(
+      "DELETE FROM audios WHERE audios_id = $1 RETURNING *;",
+      [audios_id]
+    );
+    return new VoiceNotes(response.rows[0]);
+  }
+}
 
-//   async destroy() {
-//     const response = await db.query(
-//       "DELETE FROM conversations WHERE conversation_id = $1 RETURNING *;",
-//       [this.conversation_id]
-//     );
-//     return new Conversation(response.rows[0]);
-//   }
-// }
-
-// module.exports = voicenotes;
+module.exports = VoiceNotes;
