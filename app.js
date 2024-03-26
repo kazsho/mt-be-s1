@@ -1,8 +1,9 @@
 const express = require("express");
 const cors = require("cors");
-const profileRoute = require("./routers/profiles")
-const tokenRoute = require("./routers/tokens")
-const conversationRoute = require("./routers/conversations")
+const profileRoute = require("./routers/profiles");
+const tokenRoute = require("./routers/tokens");
+const conversationRoute = require("./routers/conversations");
+const conversationRouter = require("./routers/conversations");
 
 const conversationArray = require("./Services/PromptAI");
 const multer = require("multer");
@@ -28,9 +29,9 @@ app.use(express.json());
 app.use(logRoutes);
 app.use(bodyParser.raw({ type: "audio/*", limit: "10mb" }));
 
-app.use("/profiles", profileRoute)
-app.use("/tokens", tokenRoute)
-app.use("/conversations", conversationRoute)
+app.use("/profiles", profileRoute);
+app.use("/tokens", tokenRoute);
+app.use("/conversations", conversationRoute);
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -49,5 +50,7 @@ app.post("/receive", upload.single("audio"), audioController.receive);
 app.get("/conversation", async (req, res) => {
   res.json(conversationArray);
 });
+
+app.use("/convo", conversationRouter);
 
 (module.exports = app), speechFolderPath;
