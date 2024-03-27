@@ -8,6 +8,6 @@ audiosRouter.get("/:id", audiosController.show);
 audiosRouter.post("/", audiosController.create);
 audiosRouter.patch("/:id", audiosController.update);
 audiosRouter.delete("/:id", audiosController.destroy);
-audiosRouter.get("/user/:id", audiosController.showUser);
+audiosRouter.get("/user/:id", audiosController.showConversation);
 
 module.exports = audiosRouter;

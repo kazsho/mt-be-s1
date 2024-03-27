@@ -1,21 +1,20 @@
 const Conversation = require("../Models/Conversations");
 
-// Mocking the Conversation model methods
 jest.mock("../Models/Conversations");
 
-const { index, showUser, show, create, update, destroy } = require("../controllers/conversations");
+const {index, showUser, show, create, update, destroy} = require("../controllers/conversations");
 
 describe("Controller functions", () => {
   describe("index", () => {
     it("should return all conversations", async () => {
-      const mockedConversations = [{ id: 1, title: "Conversation 1" }, { id: 2, title: "Conversation 2" }];
+      const mockedConversations = [
+        { id: 1, title: "Conversation 1" },
+        { id: 2, title: "Conversation 2" },
+      ];
       Conversation.getAll.mockResolvedValue(mockedConversations);
 
       const req = {};
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
       await index(req, res);
 
@@ -28,10 +27,7 @@ describe("Controller functions", () => {
       Conversation.getAll.mockRejectedValue(new Error(errorMessage));
 
       const req = {};
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
       await index(req, res);
 
@@ -43,14 +39,14 @@ describe("Controller functions", () => {
   describe("showUser", () => {
     it("should return conversations for a user", async () => {
       const userId = 1;
-      const mockedConversations = [{ id: 1, title: "Conversation 1" }, { id: 2, title: "Conversation 2" }];
+      const mockedConversations = [
+        { id: 1, title: "Conversation 1" },
+        { id: 2, title: "Conversation 2" },
+      ];
       Conversation.getByUser.mockResolvedValue(mockedConversations);
 
       const req = { params: { id: userId } };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
       await showUser(req, res);
 
@@ -65,10 +61,7 @@ describe("Controller functions", () => {
       Conversation.getByUser.mockRejectedValue(new Error(errorMessage));
 
       const req = { params: { id: userId } };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
       await showUser(req, res);
 
@@ -81,14 +74,14 @@ describe("Controller functions", () => {
   describe("show", () => {
     it("should return a conversation by ID", async () => {
       const conversationId = 1;
-      const mockedConversation = { id: conversationId, title: "Conversation 1" };
+      const mockedConversation = {
+        id: conversationId,
+        title: "Conversation 1",
+      };
       Conversation.getOneById.mockResolvedValue(mockedConversation);
 
       const req = { params: { id: conversationId } };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
       await show(req, res);
 
@@ -103,10 +96,7 @@ describe("Controller functions", () => {
       Conversation.getOneById.mockRejectedValue(new Error(errorMessage));
 
       const req = { params: { id: conversationId } };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
       await show(req, res);
 
@@ -123,10 +113,7 @@ describe("Controller functions", () => {
       Conversation.create.mockResolvedValue(mockedConversation);
 
       const req = { body: requestData };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
       await create(req, res);
 
@@ -141,10 +128,7 @@ describe("Controller functions", () => {
       Conversation.create.mockRejectedValue(new Error(errorMessage));
 
       const req = { body: requestData };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
       await create(req, res);
 
@@ -156,25 +140,29 @@ describe("Controller functions", () => {
 
   describe("update", () => {
     it("should update a conversation", async () => {
-        const conversationId = 1;
-        const requestData = { title: "Updated Conversation" };
-        const mockedConversation = { id: conversationId, title: "Conversation 1", update: jest.fn() }; // Ensure to mock update function
-        Conversation.getOneById.mockResolvedValue(mockedConversation);
-        const updatedConversation = { id: conversationId, title: requestData.title };
-        mockedConversation.update.mockResolvedValue(updatedConversation);
-    
-        const req = { params: { id: conversationId }, body: requestData };
-        const res = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn(),
-        };
-    
-        await update(req, res);
-    
-        expect(Conversation.getOneById).toHaveBeenCalledWith(conversationId);
-        expect(mockedConversation.update).toHaveBeenCalledWith(requestData);
-        expect(res.status).toHaveBeenCalledWith(200);
-        expect(res.json).toHaveBeenCalledWith(updatedConversation);
+      const conversationId = 1;
+      const requestData = { title: "Updated Conversation" };
+      const mockedConversation = {
+        id: conversationId,
+        title: "Conversation 1",
+        update: jest.fn(),
+      };
+      Conversation.getOneById.mockResolvedValue(mockedConversation);
+      const updatedConversation = {
+        id: conversationId,
+        title: requestData.title,
+      };
+      mockedConversation.update.mockResolvedValue(updatedConversation);
+
+      const req = { params: { id: conversationId }, body: requestData };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+
+      await update(req, res);
+
+      expect(Conversation.getOneById).toHaveBeenCalledWith(conversationId);
+      expect(mockedConversation.update).toHaveBeenCalledWith(requestData);
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(updatedConversation);
     });
 
     it("should handle errors", async () => {
@@ -184,10 +172,7 @@ describe("Controller functions", () => {
       Conversation.getOneById.mockRejectedValue(new Error(errorMessage));
 
       const req = { params: { id: conversationId }, body: requestData };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
       await update(req, res);
 
@@ -199,25 +184,25 @@ describe("Controller functions", () => {
 
   describe("destroy", () => {
     it("should destroy a conversation", async () => {
-        const conversationId = 1;
-        const mockedConversation = { id: conversationId, title: "Conversation 1", destroy: jest.fn() }; // Ensure to mock destroy function
-        Conversation.getOneById.mockResolvedValue(mockedConversation);
-        const mockedDestroyResult = {};
-        mockedConversation.destroy.mockResolvedValue(mockedDestroyResult);
-    
-        const req = { params: { id: conversationId } };
-        const res = {
-          status: jest.fn().mockReturnThis(),
-          json: jest.fn(),
-          end: jest.fn(),
-        };
-    
-        await destroy(req, res);
-    
-        expect(Conversation.getOneById).toHaveBeenCalledWith(conversationId);
-        expect(mockedConversation.destroy).toHaveBeenCalled();
-        expect(res.status).toHaveBeenCalledWith(204);
-        expect(res.end).toHaveBeenCalled();
+      const conversationId = 1;
+      const mockedConversation = {
+        id: conversationId,
+        title: "Conversation 1",
+        destroy: jest.fn(),
+      };
+      Conversation.getOneById.mockResolvedValue(mockedConversation);
+      const mockedDestroyResult = {};
+      mockedConversation.destroy.mockResolvedValue(mockedDestroyResult);
+
+      const req = { params: { id: conversationId } };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn(), end: jest.fn() };
+
+      await destroy(req, res);
+
+      expect(Conversation.getOneById).toHaveBeenCalledWith(conversationId);
+      expect(mockedConversation.destroy).toHaveBeenCalled();
+      expect(res.status).toHaveBeenCalledWith(204);
+      expect(res.end).toHaveBeenCalled();
     });
 
     it("should handle errors", async () => {
@@ -226,10 +211,7 @@ describe("Controller functions", () => {
       Conversation.getOneById.mockRejectedValue(new Error(errorMessage));
 
       const req = { params: { id: conversationId } };
-      const res = {
-        status: jest.fn().mockReturnThis(),
-        json: jest.fn(),
-      };
+      const res = { status: jest.fn().mockReturnThis(), json: jest.fn() };
 
       await destroy(req, res);
 
