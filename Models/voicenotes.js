@@ -5,7 +5,6 @@ class VoiceNotes {
     this.conversation_id = conversation_id;
     this.audio_id = audio_id;
     this.audio_data = audio_data;
-    this.conversation_title = conversation_title;
   }
 
   static async getAll() {
@@ -22,7 +21,7 @@ class VoiceNotes {
       [id]
     );
 
-    if (response.rows.length === 1) {
+    if (response.rows.length === 0) {
       throw new Error("Unable to locate audios for the conversation.");
     }
 
@@ -46,7 +45,7 @@ class VoiceNotes {
     const { audio_id, conversation_id, audio_data } = data;
 
     let response = await db.query(
-      "INSERT INTO conversations (audio_id, conversation_id, audio_data) VALUES ($1, $2, $3, $4) RETURNING *;",
+      "INSERT INTO conversations (audio_id, conversation_id, audio_data) VALUES ($1, $2, $3) RETURNING *;",
       [audio_id, conversation_id, audio_data]
     );
 
@@ -59,11 +58,11 @@ class VoiceNotes {
 
   async update(data) {
     const response = await db.query(
-      "UPDATE audios SET conversation_title = $1 WHERE audios_id = $2 RETURNING *;",
-      [data.conversation_title]
+      "UPDATE audios SET audio_data = $1 WHERE audio_id = $2 RETURNING *;",
+      [data.audio_data]
     );
     if (response.rows.length != 1) {
-      throw new Error("Unable to update conversation title.");
+      throw new Error("Unable to update audio data.");
     }
     return new VoiceNotes(response.rows[0]);
   }
@@ -71,7 +70,7 @@ class VoiceNotes {
   async destroy() {
     const response = await db.query(
       "DELETE FROM audios WHERE audios_id = $1 RETURNING *;",
-      [audios_id]
+      [this.audio_id]
     );
     return new VoiceNotes(response.rows[0]);
   }

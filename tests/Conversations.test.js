@@ -1,4 +1,4 @@
-const Conversation = require('../Models/Conversations'); // Assuming Conversation class is in Conversation.js
+const Conversation = require('../Models/Conversations');
 const db = require('../Database/connect');
 
 jest.mock('../Database/connect', () => ({

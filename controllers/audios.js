@@ -9,10 +9,10 @@ async function index(req, res) {
   }
 }
 
-async function showUser(req, res) {
+async function showConversation(req, res) {
   try {
     let id = req.params.id;
-    const voiceNotes = await VoiceNotes.getByUser(id);
+    const voiceNotes = await VoiceNotes.getByConversation(id);
     res.status(200).json(voiceNotes);
   } catch (e) {
     res.status(404).json({ error: e.message });
@@ -62,4 +62,4 @@ async function destroy(req, res) {
   }
 }
 
-module.exports = { index, showUser, show, create, update, destroy };
+module.exports = { index, showConversation, show, create, update, destroy };

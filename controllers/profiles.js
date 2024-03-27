@@ -32,8 +32,6 @@ async function login(req, res) {
       profile["password"]
     );
 
-    console.log("profile: " + profile.account_id);
-
     if (!authenticated) {
       throw new Error("Incorrect credentials.");
     } else {
